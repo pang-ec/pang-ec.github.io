@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기술 포트폴리오 — 뜬구름 잡는 이야기</title>
+<meta name="description" content="클라우드 인프라 엔지니어 조은찬의 실무 프로젝트와 기술 스택 정리.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">☁</span>
+      <span class="brand-text">뜬구름 잡는 이야기</span>
+    </a>
+    <nav class="site-nav">
+      <a href="index.html#log">관측 기록</a>
+      <a href="portfolio.html" class="is-active">기술 포트폴리오</a>
+      <a href="index.html#about">관측소 소개</a>
+      <a href="https://github.com/pang-ec" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<section class="post-hero wrap">
+  <p class="post-breadcrumb">PORTFOLIO</p>
+  <h1 class="post-title">기술 포트폴리오</h1>
+  <div class="post-meta-bar">
+    <span>조은찬 · 클라우드 인프라 엔지니어</span>
+    <span>디딤365 (Didim365) · MSG 대리</span>
+  </div>
+</section>
+
+<main class="wrap portfolio-body">
+
+  <section class="pf-section">
+    <h2 class="pf-h2">경력 요약</h2>
+    <div class="pf-summary">
+      <p>
+        디딤365 Managed Services Group에서 4년 이상 VIP 등급 고객사의 클라우드 인프라를 운영하고 있습니다.
+        NCP(GOV 리전 포함) · KT Cloud · KT G-Cloud · AWS를 넘나들며 운영·마이그레이션·장애 대응을 담당하고,
+        최근에는 Claude API와 MCP를 활용한 업무 자동화 에이전트 개발까지 영역을 넓히고 있습니다.
+      </p>
+      <ul class="pf-facts">
+        <li><span>소속</span>디딤365 · Managed Services Group (대리)</li>
+        <li><span>경력</span>2022.05 ~ 현재 (MSP 클라우드 인프라 운영)</li>
+        <li><span>담당 고객사</span>연세대학교 · 광명시청 · 네이블커뮤니케이션즈 (VIP 등급)</li>
+        <li><span>자격증</span>NCP Professional (2023.11 취득)</li>
+        <li><span>학력</span>유원대학교 자동차소프트웨어학과 졸업 (GPA 3.8/4.5)</li>
+        <li><span>수상</span>2021 혁신성장 청년인재 집중양성 공모전 금상 (2022, 정보통신기획평가원·IT여성기업인협회·AWS 공동주관)</li>
+        <li><span>GitHub</span><a href="https://github.com/pang-ec" target="_blank" rel="noopener">github.com/pang-ec</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="isobar" aria-hidden="true">
+    <svg viewBox="0 0 1200 24" preserveAspectRatio="none"><path d="M0,12 C150,2 300,22 450,12 C600,2 750,22 900,12 C1050,2 1150,18 1200,10" /></svg>
+  </div>
+
+  <section class="pf-section">
+    <h2 class="pf-h2">핵심 프로젝트</h2>
+
+    <article class="pf-project">
+      <div class="pf-project-head">
+        <h3>고객 문의 자동화 AI Agent 시스템</h3>
+        <span class="log-tag">AI 에이전트</span>
+      </div>
+      <p class="pf-project-desc">
+        디딤 AI Innovation Challenge 제출작. Claude Sonnet 4 API를 중심으로 고객 문의를 자동 분류하고,
+        담당자 라우팅과 초안 작성까지 처리하는 사내 업무 자동화 에이전트를 설계·구현했습니다.
+      </p>
+      <ul class="pf-project-points">
+        <li>Flask 서버 2대(포트 5000/5001)로 요청 처리와 자동화 로직을 분리한 아키텍처 설계</li>
+        <li>NCP VPC API 연동으로 ACG(방화벽) 정책 자동 생성 — 중복 규칙 감지 로직 포함</li>
+        <li>Gmail SMTP, MS Teams Power Automate 웹훅, Confluence REST API 등 다중 외부 서비스 통합</li>
+        <li>Teams Adaptive Card 포맷 대응, 특수문자 JSON 파싱 오류 등 실제 운영 이슈 해결</li>
+      </ul>
+      <div class="pf-stack">
+        <span>Python</span><span>Flask</span><span>Claude API</span><span>NCP VPC API</span><span>Confluence REST API</span>
+      </div>
+    </article>
+
+    <article class="pf-project">
+      <div class="pf-project-head">
+        <h3>NCP MCP Server</h3>
+        <span class="log-tag">오픈소스</span>
+      </div>
+      <p class="pf-project-desc">
+        Naver Cloud Platform 리소스를 Claude와 같은 LLM 클라이언트에서 직접 조회·제어할 수 있도록 만든
+        TypeScript 기반 MCP(Model Context Protocol) 서버. GitHub에 공개 저장소로 유지 중입니다.
+      </p>
+      <div class="pf-stack">
+        <span>TypeScript</span><span>Node.js</span><span>MCP SDK</span><span>NCP API</span>
+      </div>
+      <a class="pf-project-link" href="https://github.com/pang-ec/ncp-mcp-server" target="_blank" rel="noopener">
+        github.com/pang-ec/ncp-mcp-server →
+      </a>
+    </article>
+
+    <article class="pf-project">
+      <div class="pf-project-head">
+        <h3>Kubernetes 리소스 감사 및 QoS 최적화</h3>
+        <span class="log-tag">인프라 운영</span>
+      </div>
+      <p class="pf-project-desc">
+        특정 네임스페이스의 QoS 클래스와 리소스 설정을 전수 점검하고, Prometheus PromQL로 7일간
+        CPU/메모리 사용량을 분석해 Guaranteed QoS 전환을 위한 리소스 값을 산정했습니다.
+      </p>
+      <ul class="pf-project-points">
+        <li>실사용량 최대치 × 1.2 기준으로 CPU/메모리 요청·제한값 재산정 (10m/64Mi 단위 반올림)</li>
+        <li>4개 시트로 구성된 Excel 리포트 작성 (현황, 사용량 분석, 권장값, 요약)</li>
+        <li>메모리 사용량이 순간적으로 limit을 초과하고도 OOMKill이 발생하지 않은 사례를 ArgoCD 롤링 재배포 주기와 연결해 원인 규명</li>
+      </ul>
+      <div class="pf-stack">
+        <span>Kubernetes</span><span>Prometheus</span><span>PromQL</span><span>ArgoCD</span>
+      </div>
+    </article>
+
+    <article class="pf-project">
+      <div class="pf-project-head">
+        <h3>WAF·로드밸런서 트래픽 분석</h3>
+        <span class="log-tag">성능 분석</span>
+      </div>
+      <p class="pf-project-desc">
+        대학 수강신청 이벤트 기간 NCP WAF/로드밸런서 트래픽 CSV 데이터를 분석해, 새로 적용한 3중화
+        구성 하에서 성능 이슈가 없었음을 확인하고 고객 대상 보고와 내부 튜닝 관찰 사항을 구분해 정리했습니다.
+      </p>
+      <div class="pf-stack">
+        <span>NCP WAF</span><span>Load Balancer</span><span>데이터 분석</span>
+      </div>
+    </article>
+
+    <article class="pf-project">
+      <div class="pf-project-head">
+        <h3>하이퍼바이저 레벨 장애 포렌식</h3>
+        <span class="log-tag">트러블슈팅</span>
+      </div>
+      <p class="pf-project-desc">
+        원인 불명의 서버 하드 리부팅 건에서 journald·시스템 로그를 분석해 OS 레벨 원인을 모두 배제하고,
+        하이퍼바이저 레벨 개입 가능성을 특정해 KT Cloud에 정식 지원 티켓을 작성·요청했습니다.
+      </p>
+      <div class="pf-stack">
+        <span>Linux</span><span>로그 포렌식</span><span>KT Cloud</span>
+      </div>
+    </article>
+
+  </section>
+
+  <div class="isobar isobar--flip" aria-hidden="true">
+    <svg viewBox="0 0 1200 24" preserveAspectRatio="none"><path d="M0,12 C150,2 300,22 450,12 C600,2 750,22 900,12 C1050,2 1150,18 1200,10" /></svg>
+  </div>
+
+  <section class="pf-section">
+    <h2 class="pf-h2">기술 스택</h2>
+    <div class="pf-skills">
+      <div class="pf-skill-group">
+        <h4>클라우드 · 인프라</h4>
+        <div class="pf-stack"><span>NCP (GOV)</span><span>AWS</span><span>KT Cloud</span><span>KT G-Cloud</span><span>Kubernetes</span></div>
+      </div>
+      <div class="pf-skill-group">
+        <h4>개발 · 자동화</h4>
+        <div class="pf-stack"><span>Python</span><span>Flask</span><span>TypeScript</span><span>Claude API</span><span>MCP SDK</span></div>
+      </div>
+      <div class="pf-skill-group">
+        <h4>연동 · 운영 도구</h4>
+        <div class="pf-stack"><span>NCP VPC API</span><span>Confluence REST API</span><span>Prometheus</span><span>ArgoCD</span><span>Power Automate</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pf-cta">
+    <p>더 자세한 프로젝트 배경이나 경력기술서가 필요하시면 GitHub 저장소를 참고하시거나 연락 주세요.</p>
+    <a class="pf-cta-btn" href="https://github.com/pang-ec" target="_blank" rel="noopener">GitHub 방문하기</a>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <span>© 2026 뜬구름 잡는 이야기</span>
+    <a href="https://github.com/pang-ec" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
