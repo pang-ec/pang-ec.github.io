@@ -60,10 +60,23 @@
 
   <p>인프라 엔지니어 입장에서 "우리 쪽엔 원인이 없다"를 증명하는 것도 결국 로그로 하나씩
   가능성을 소거해나가는 작업이라는 걸 다시 확인한 사례였다.</p>
+
+  <h2>조사 순서를 정리하면</h2>
+  <p>비슷한 상황을 또 만났을 때 헤매지 않도록, 이번에 밟은 순서를 체크리스트로 남겨둔다.</p>
+  <ol>
+    <li>재부팅 시각을 최대한 정확히 특정 (uptime, last reboot 등)</li>
+    <li>OS 레벨 종료 명령 실행 흔적 확인 (secure, messages, journald 순으로)</li>
+    <li>OS 레벨에서 아무 흔적이 없으면 하드웨어/플랫폼 이슈로 가정 전환</li>
+    <li>플랫폼사에 특정 시각 기준으로 좁혀서 로그 요청 (범위가 넓으면 응답이 늦어짐)</li>
+  </ol>
+
+  <div class="post-note">
+    이후 KT Cloud로부터 받은 회신 내용과 실제 원인이 확정되면 이 글에 후속 업데이트로 이어붙일 예정.
+  </div>
 </article>
 
 <div class="wrap post-footer-nav">
-  <a href="backup-policy-mismatch.html">← 이전 글</a>
+  <a href="waf-traffic-analysis.html">← 이전 글</a>
   <a href="mcp-server-first-agent.html">다음 글 →</a>
 </div>
 
