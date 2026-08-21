@@ -99,6 +99,9 @@
       <div class="stack">
         <span>Kubernetes</span><span>Prometheus</span><span>PromQL</span><span>ArgoCD</span>
       </div>
+      <a class="project-link" href="https://github.com/pang-ec/k8s-qos-toolkit" target="_blank" rel="noopener">
+        github.com/pang-ec/k8s-qos-toolkit →
+      </a>
     </article>
 
     <article class="project">
@@ -127,6 +130,29 @@
       <div class="stack">
         <span>Linux</span><span>로그 포렌식</span><span>KT Cloud</span>
       </div>
+    </article>
+
+    <article class="project">
+      <div class="project-head">
+        <h3>인프라 드리프트 감시기 (PoC)</h3>
+        <span class="tag">사이드 프로젝트</span>
+      </div>
+      <p class="project-desc">
+        MSP 운영 중 콘솔에서 수동으로 바뀐 리소스를 Terraform이 모르고 있는 상황을 반복적으로 겪으면서,
+        Terraform state와 실제 클라우드 리소스 사이의 드리프트를 자동 감지해 Slack/Teams로 알려주는
+        도구를 개인 프로젝트로 만들어보고 있습니다.
+      </p>
+      <ul class="project-points">
+        <li><code>terraform plan -detailed-exitcode</code> 결과를 파싱해 변경된 리소스만 추출</li>
+        <li>Slack/Teams 웹훅으로 드리프트 발생 시 자동 알림</li>
+        <li>다음 단계로 NCP/AWS API 직접 조회 기반의 IaC-비의존 감지 모드 계획 중</li>
+      </ul>
+      <div class="stack">
+        <span>Python</span><span>Terraform</span><span>Slack API</span><span>Teams Webhook</span>
+      </div>
+      <a class="project-link" href="https://github.com/pang-ec/infra-drift-watcher" target="_blank" rel="noopener">
+        github.com/pang-ec/infra-drift-watcher →
+      </a>
     </article>
 
   </div>
