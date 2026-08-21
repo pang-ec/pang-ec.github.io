@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>메모리가 limit을 넘었는데 왜 안 죽었을까 — K8s QoS 감사기</title>
+<title>메모리 사용량이 limit을 초과했지만 OOMKill이 발생하지 않은 사례 분석</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
 <link rel="stylesheet" href="../css/style.css">
@@ -24,7 +24,7 @@
 
 <section class="post-hero wrap">
   <p class="post-breadcrumb"><a href="../index.html#writing">글</a> / 인프라 운영</p>
-  <h1 class="post-title">메모리가 limit을 넘었는데<br>왜 안 죽었을까 — K8s QoS 감사기</h1>
+  <h1 class="post-title">메모리 사용량이 limit을 초과했지만<br>OOMKill이 발생하지 않은 사례 분석</h1>
   <div class="post-meta-bar">
     <span>2026.05.02</span>
     <span class="tag">인프라 운영</span>
@@ -39,14 +39,45 @@
   <p>대부분의 파드가 <code>Burstable</code> QoS로 떠 있었다. request와 limit이 다르게 설정돼
   있으면 이 등급이 붙는데, 이 상태에서는 노드 전체 메모리 압박이 있을 때만 우선적으로
   종료 대상이 된다 — 즉 "이 파드 하나가 limit을 넘었다"는 사실만으로는 즉시 죽지 않을 수 있다.</p>
+  <pre><code>kubectl get pods -n &lt;namespace&gt; \
+  -o custom-columns=NAME:.metadata.name,QOS:.status.qosClass</code></pre>
+  <p>QoS 클래스는 세 가지로 나뉜다. 이번 감사에서는 대부분이 Burstable이었고,
+  전환 목표로 삼은 건 request와 limit을 동일하게 맞춘 Guaranteed 등급이었다.</p>
+
+  <table class="post-table">
+    <thead>
+      <tr><th>QoS 클래스</th><th>조건</th><th>메모리 압박 시 우선순위</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Guaranteed</td><td>request = limit (모든 컨테이너)</td><td>가장 마지막에 종료</td></tr>
+      <tr><td>Burstable</td><td>request &lt; limit</td><td>중간 — 노드 상황에 따라 종료</td></tr>
+      <tr><td>BestEffort</td><td>request/limit 미설정</td><td>가장 먼저 종료</td></tr>
+    </tbody>
+  </table>
 
   <h2>7일치 사용량을 PromQL로 뽑아보기</h2>
   <p>실제 사용 패턴을 보려고 Prometheus에서 CPU/메모리 사용량을 7일 구간으로 조회했다.</p>
   <pre><code>max_over_time(
   container_memory_working_set_bytes{namespace="&lt;ns&gt;"}[7d]
+)
+
+max_over_time(
+  rate(container_cpu_usage_seconds_total{namespace="&lt;ns&gt;"}[5m])[7d:]
 )</code></pre>
   <p>여기서 나온 최댓값을 기준으로 <code>× 1.2</code> 배수를 적용해 새 request/limit 값을 산정했다.
   값은 CPU 10m, 메모리 64Mi 단위로 반올림해서 실무에서 다루기 쉬운 숫자로 맞췄다.</p>
+
+  <table class="post-table">
+    <thead>
+      <tr><th>항목</th><th>7일 최댓값</th><th>× 1.2 적용</th><th>반올림 후 권장값</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>CPU</td><td>187m</td><td>224m</td><td>230m (10m 단위)</td></tr>
+      <tr><td>메모리</td><td>612Mi</td><td>734Mi</td><td>768Mi (64Mi 단위)</td></tr>
+    </tbody>
+  </table>
+  <p>예시로 든 위 값은 감사 방식을 설명하기 위한 샘플이고, 실제 산정값은 네임스페이스마다
+  개별적으로 계산해 리포트에 담았다.</p>
 
   <h2>OOMKill이 없었던 진짜 이유</h2>
   <p>원인을 더 파고 보니, 문제의 네임스페이스는 ArgoCD로 롤링 재배포가 굉장히 잦았다.

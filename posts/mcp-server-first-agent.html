@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Claude API로 사내 자동화 만들기</title>
+<title>Claude API 기반 사내 업무 자동화 에이전트 구축기</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
 <link rel="stylesheet" href="../css/style.css">
@@ -24,7 +24,7 @@
 
 <section class="post-hero wrap">
   <p class="post-breadcrumb"><a href="../index.html#writing">글</a> / AI 에이전트</p>
-  <h1 class="post-title">Claude API로 사내 자동화 만들기<br>— MCP Server 첫걸음</h1>
+  <h1 class="post-title">Claude API 기반<br>사내 업무 자동화 에이전트 구축기</h1>
   <div class="post-meta-bar">
     <span>2026.07.12</span>
     <span class="tag">AI 에이전트</span>
@@ -32,26 +32,81 @@
 </section>
 
 <article class="post-body wrap">
-  <p>고객 문의 자동화 AI Agent를 사내 챌린지에 제출하면서 부딪혔던 문제들을 정리한다.
-  구성은 단순했다: Flask 서버 두 대(5000/5001 포트), NCP VPC API로 ACG 자동화,
+  <p>고객 문의 자동화 AI Agent를 디딤 AI Innovation Challenge에 제출하면서 부딪혔던 문제들을
+  정리한다. 구성은 단순했다: Flask 서버 두 대(5000/5001 포트), NCP VPC API로 ACG 자동화,
   Gmail SMTP, MS Teams Power Automate 웹훅, Confluence REST API.</p>
 
-  <h2>겪었던 문제들</h2>
-  <ul>
-    <li>NCP ACG 규칙을 중복으로 생성하려던 문제 — 생성 전 기존 규칙 조회 로직 추가로 해결</li>
-    <li>특수문자가 섞인 응답에서 JSON 파싱이 깨지던 문제</li>
-    <li>Teams Adaptive Card 포맷을 안 맞추면 웹훅이 조용히 실패하던 문제</li>
-    <li>웹훅 방식과 폴링 방식 중 어떤 걸 아키텍처로 선택할지에 대한 고민</li>
-  </ul>
+  <h2>전체 구조</h2>
+  <figure class="diagram">
+    <svg viewBox="0 0 700 300" role="img" aria-labelledby="mcpDiagTitle mcpDiagDesc">
+      <title id="mcpDiagTitle">고객 문의 자동화 에이전트 아키텍처</title>
+      <desc id="mcpDiagDesc">문의 접수 서버와 처리 서버가 Claude API를 거쳐 NCP, Teams, Gmail, Confluence와 연동되는 구조</desc>
 
-  <div class="post-note">
-    이 글은 초안입니다. 실제 코드 스니펫이나 아키텍처 다이어그램을 추가하면 훨씬 읽을 만한 글이 됩니다.
-  </div>
+      <rect x="20" y="24" width="160" height="46" rx="5" class="diagram-node diagram-node--accent"/>
+      <text x="100" y="52" text-anchor="middle" class="diagram-label diagram-label--accent">문의 접수 (5000)</text>
 
-  <h2>데모 이후</h2>
-  <p>데모가 끝난 뒤 인트라넷 통합은 개발팀이 이어받았고, 나는 비즈니스 프로세스 정의 쪽으로 역할을 옮겼다.
-  이 과정에서 얻은 제일 큰 교훈은, MSP 엔지니어가 짤 수 있는 자동화의 범위가 생각보다 넓다는 것.
-  인프라를 다루는 사람이 API까지 직접 엮을 수 있으면 자동화 후보 자체가 훨씬 많아진다.</p>
+      <rect x="20" y="150" width="160" height="46" rx="5" class="diagram-node diagram-node--accent"/>
+      <text x="100" y="178" text-anchor="middle" class="diagram-label diagram-label--accent">처리 서버 (5001)</text>
+
+      <rect x="270" y="87" width="160" height="46" rx="5" class="diagram-node"/>
+      <text x="350" y="115" text-anchor="middle" class="diagram-label">Claude API</text>
+
+      <rect x="520" y="10" width="160" height="42" rx="5" class="diagram-node diagram-node--muted"/>
+      <text x="600" y="36" text-anchor="middle" class="diagram-label">NCP VPC API (ACG)</text>
+
+      <rect x="520" y="66" width="160" height="42" rx="5" class="diagram-node diagram-node--muted"/>
+      <text x="600" y="92" text-anchor="middle" class="diagram-label">MS Teams 웹훅</text>
+
+      <rect x="520" y="122" width="160" height="42" rx="5" class="diagram-node diagram-node--muted"/>
+      <text x="600" y="148" text-anchor="middle" class="diagram-label">Gmail SMTP</text>
+
+      <rect x="520" y="178" width="160" height="42" rx="5" class="diagram-node diagram-node--muted"/>
+      <text x="600" y="204" text-anchor="middle" class="diagram-label">Confluence API</text>
+
+      <line x1="180" y1="47" x2="270" y2="100" class="diagram-arrow"/>
+      <line x1="180" y1="173" x2="270" y2="120" class="diagram-arrow"/>
+      <line x1="100" y1="70" x2="100" y2="150" class="diagram-arrow"/>
+
+      <line x1="430" y1="100" x2="520" y2="31" class="diagram-arrow"/>
+      <line x1="430" y1="105" x2="520" y2="87" class="diagram-arrow"/>
+      <line x1="430" y1="112" x2="520" y2="143" class="diagram-arrow"/>
+      <line x1="430" y1="118" x2="520" y2="199" class="diagram-arrow"/>
+    </svg>
+    <figcaption>문의가 접수되면 처리 서버가 Claude API로 분류·초안 작성을 거친 뒤, 결과에 따라 NCP·Teams·Gmail·Confluence로 분기해 처리한다.</figcaption>
+  </figure>
+
+  <h2>ACG 중복 규칙, 어떻게 잡았나</h2>
+  <p>같은 포트/대역에 대한 ACG 규칙을 매번 새로 생성하려던 문제가 있었다. NCP VPC API로 생성 전에
+  기존 규칙 목록을 먼저 조회해서, 동일한 protocol/port/cidr 조합이 있으면 생성을 건너뛰도록
+  가드를 추가했다.</p>
+  <pre><code>def create_acg_rule_if_absent(client, acg_id, protocol, port, cidr):
+    existing = client.list_acg_rules(acg_id)
+    for rule in existing:
+        if (rule.protocol, rule.port, rule.cidr) == (protocol, port, cidr):
+            return {"status": "skipped", "reason": "duplicate"}
+
+    return client.create_acg_rule(
+        acg_id=acg_id,
+        protocol=protocol,
+        port=port,
+        cidr=cidr,
+    )</code></pre>
+  <p>별거 아닌 로직이지만, 이게 없으면 ACG 규칙이 며칠 만에 수십 개로 불어난다.</p>
+
+  <h2>특수문자 JSON 파싱 실패</h2>
+  <p>고객 문의 원문에 따옴표나 이스케이프 문자가 섞여 들어오면 Claude 응답을 JSON으로 파싱하는
+  단계에서 종종 깨졌다. 응답 프롬프트에 "JSON 외 텍스트를 포함하지 말 것"을 명시하고,
+  파싱 실패 시 한 번 재시도하는 방어 로직을 추가해 해결했다.</p>
+  <pre><code>import json
+
+def parse_claude_response(raw_text: str) -> dict:
+    cleaned = raw_text.strip().removeprefix("```json").removesuffix("```").strip()
+    try:
+        return json.loads(cleaned)
+    except json.JSONDecodeError:
+        # 한 번 더 정제 후 재시도
+        cleaned = cleaned.encode().decode("unicode_escape")
+        return json.loads(cleaned)</code></pre>
 
   <h2>아키텍처 결정: 웹훅 vs 폴링</h2>
   <p>초기엔 Confluence/Teams 쪽 변경을 폴링으로 감지하려 했는데, 두 가지 이유로 웹훅으로 바꿨다.</p>
@@ -59,23 +114,23 @@
     <li>폴링 주기를 짧게 잡으면 API 호출량이 금방 쌓이고, 길게 잡으면 반응이 느려짐</li>
     <li>Teams는 Power Automate로 이벤트 발생 시점에 바로 웹훅을 쏴줄 수 있어서 실시간성이 훨씬 좋음</li>
   </ul>
-  <p>다만 웹훅 방식은 수신 서버가 항상 떠있어야 한다는 전제가 붙는다. 그래서 Flask 서버를 NCP 퍼블릭 클라우드에
-  상시 기동해두는 구조로 갔다.</p>
+  <p>다만 웹훅 방식은 수신 서버가 항상 떠있어야 한다는 전제가 붙는다. 그래서 Flask 서버를 NCP 퍼블릭
+  클라우드에 상시 기동해두는 구조로 갔다.</p>
 
-  <h2>ACG 중복 규칙, 어떻게 잡았나</h2>
-  <p>같은 포트/대역에 대한 ACG 규칙을 매번 새로 생성하려던 문제가 있었다. NCP VPC API로 생성 전에
-  기존 규칙 목록을 먼저 조회해서, 동일한 protocol/port/cidr 조합이 있으면 생성을 건너뛰도록
-  가드를 추가했다. 별거 아닌 로직이지만, 이게 없으면 ACG 규칙이 며칠 만에 수십 개로 불어난다.</p>
+  <h2>데모 이후</h2>
+  <p>데모가 끝난 뒤 인트라넷 통합은 개발팀이 이어받았고, 나는 비즈니스 프로세스 정의 쪽으로 역할을
+  옮겼다. 이 과정에서 얻은 제일 큰 교훈은, MSP 엔지니어가 짤 수 있는 자동화의 범위가 생각보다
+  넓다는 것. 인프라를 다루는 사람이 API까지 직접 엮을 수 있으면 자동화 후보 자체가 훨씬 많아진다.</p>
 
   <div class="post-note">
-    이 프로젝트 이후 NCP 리소스를 Claude에서 직접 제어하는 MCP Server(<code>ncp-mcp-server</code>)로
-    작업을 이어가고 있다. 관련 내용은 별도 글로 정리할 예정.
+    이 프로젝트 이후 NCP 리소스를 Claude에서 직접 제어하는 MCP Server(<code>ncp-mcp-server</code>)
+    개발로 이어갔다. TypeScript로 만든 이 프로젝트는 GitHub에 공개 저장소로 올려두었다.
   </div>
 </article>
 
 <div class="wrap post-footer-nav">
-  <a href="hypervisor-forensics.html">← 이전 글</a>
-  <a href="../index.html#writing">목록으로 →</a>
+  <a href="github-migration-auth.html">← 이전 글</a>
+  <a href="hypervisor-forensics.html">다음 글 →</a>
 </div>
 
 <footer class="site-footer">

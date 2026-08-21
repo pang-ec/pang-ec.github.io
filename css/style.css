@@ -188,6 +188,38 @@ main.wrap{ padding:52px 24px 20px; }
 }
 .post-footer-nav a{ text-decoration:underline; text-underline-offset:3px; }
 
+/* ---------- Diagrams in posts ---------- */
+.diagram{ margin:0 0 28px; }
+.diagram svg{
+  width:100%; height:auto;
+  background:var(--panel); border:1px solid var(--line); border-radius:8px;
+}
+.diagram-heading{ font-family:var(--font-mono); font-size:12px; fill:var(--ink-soft); }
+.diagram-box{ fill:var(--panel); stroke:var(--line); stroke-width:1; }
+.diagram-box--muted{ fill:var(--bg); }
+.diagram-node{ fill:var(--bg); stroke:var(--line); stroke-width:1; }
+.diagram-node--accent{ fill:var(--accent-soft); stroke:var(--accent); }
+.diagram-node--muted{ fill:var(--bg); stroke:var(--line); }
+.diagram-label{ font-family:var(--font-mono); font-size:12px; fill:var(--ink); }
+.diagram-label--accent{ fill:var(--accent); }
+.diagram-arrow{ stroke:var(--ink-soft); stroke-width:1.2; }
+.diagram-arrow-head{ fill:var(--ink-soft); }
+.diagram figcaption{ font-size:12.5px; color:var(--ink-soft); margin-top:8px; }
+
+/* ---------- Tables in posts ---------- */
+.post-table{
+  width:100%; border-collapse:collapse; margin:0 0 22px;
+  font-size:13.5px;
+}
+.post-table th, .post-table td{
+  text-align:left; padding:9px 12px; border-bottom:1px solid var(--line);
+}
+.post-table th{
+  font-family:var(--font-mono); font-size:11px; color:var(--ink-soft);
+  font-weight:600; letter-spacing:0.02em; border-bottom:1px solid var(--ink);
+}
+.post-table td{ color:var(--ink); }
+
 /* ---------- Responsive ---------- */
 @media (max-width:720px){
   .site-nav{ gap:14px; font-size:12.5px; }
