@@ -3,25 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>뜬구름 잡는 이야기 — 클라우드 관측 일지</title>
-<meta name="description" content="클라우드 인프라 엔지니어가 실무에서 겪은 트러블슈팅, 아키텍처, AI 에이전트 이야기를 기록하는 관측 일지.">
+<title>조은찬 — Cloud Infrastructure Engineer</title>
+<meta name="description" content="클라우드 인프라 엔지니어 조은찬의 포트폴리오. NCP · AWS · KT Cloud 운영 및 AI 에이전트 개발 프로젝트 기록.">
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JetBrains-Mono/2.304/webfonts/JetBrainsMono-Regular.woff2" as="font" crossorigin>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <header class="site-header">
   <div class="wrap header-inner">
-    <a class="brand" href="index.html">
-      <span class="brand-mark" aria-hidden="true">☁</span>
-      <span class="brand-text">뜬구름 잡는 이야기</span>
-    </a>
+    <a class="brand" href="index.html">조은찬</a>
     <nav class="site-nav">
-      <a href="#log">관측 기록</a>
-      <a href="portfolio.html">기술 포트폴리오</a>
-      <a href="#about">관측소 소개</a>
+      <a href="#projects">프로젝트</a>
+      <a href="#writing">글</a>
+      <a href="#about">소개</a>
       <a href="https://github.com/pang-ec" target="_blank" rel="noopener">GitHub</a>
     </nav>
   </div>
@@ -29,117 +25,179 @@
 
 <section class="hero">
   <div class="wrap hero-inner">
-    <p class="eyebrow">CLOUD OBSERVATION LOG · SEOUL</p>
-    <h1 class="hero-title">
-      뜬<span class="hero-gap"></span>구름<span class="hero-gap"></span>잡는<br>
-      이야기
-    </h1>
+    <p class="eyebrow">CLOUD INFRASTRUCTURE ENGINEER</p>
+    <h1 class="hero-title">조은찬</h1>
     <p class="hero-sub">
-      매일 NCP·AWS·KT Cloud 위를 떠다니는 문제들을 붙잡아<br class="br-desktop">
-      글로 정리하는 클라우드 인프라 엔지니어의 관측 일지.
+      NCP · AWS · KT Cloud 위에서 VIP 고객사의 인프라를 운영하고,<br class="br-desktop">
+      Claude API 기반 업무 자동화를 개발합니다.
     </p>
-
-    <div class="gauge" role="img" aria-label="오늘의 구름량 72퍼센트, 체감 흐림">
-      <div class="gauge-row">
-        <span class="gauge-label">오늘의 구름량</span>
-        <span class="gauge-value">72%</span>
-      </div>
-      <div class="gauge-bar">
-        <div class="gauge-fill" style="width:72%"></div>
-      </div>
-      <div class="gauge-row gauge-row--small">
-        <span>체감: 흐림 · 트러블슈팅 다수</span>
-        <span class="gauge-updated">업데이트 2026.08.21</span>
-      </div>
+    <div class="hero-facts">
+      <span>디딤365 · Managed Services Group</span>
+      <span>4년+ 클라우드 인프라 운영</span>
+      <span>NCP Professional</span>
     </div>
   </div>
-
-  <div class="isobar-hero" aria-hidden="true"></div>
 </section>
 
-<div class="isobar" aria-hidden="true">
-  <svg viewBox="0 0 1200 24" preserveAspectRatio="none"><path d="M0,12 C150,2 300,22 450,12 C600,2 750,22 900,12 C1050,2 1150,18 1200,10" /></svg>
-</div>
-
-<main class="wrap" id="log">
+<main class="wrap" id="projects">
   <div class="section-head">
-    <h2>관측 기록 <span class="section-head-en">POST LOG</span></h2>
-    <p class="section-desc">각 글에는 다루는 문제의 <strong>구름량(복잡도)</strong>과 <strong>체감 난이도</strong>를 표시합니다.</p>
+    <h2>프로젝트</h2>
   </div>
 
-  <div class="log-list">
+  <div class="project-list">
 
-    <article class="log-card">
-      <a class="log-card-link" href="posts/backup-policy-mismatch.html">
-        <div class="log-meta">
-          <span class="log-date">2026.08.21</span>
-          <span class="log-tag">아키텍처</span>
-        </div>
-        <h3 class="log-title">표준 백업 정책이 안 통하는 이유 — MVNO 고객사 아키텍처 분석기</h3>
-        <p class="log-excerpt">EKS PV/PVC도 없고, RDS는 관리형이고, 스냅샷은 AWS가 알아서 챙긴다면? 표준 백업 정책 템플릿이 왜 이 환경엔 안 맞는지 팀장님께 설명한 과정.</p>
-        <div class="log-gauge">
-          <span class="log-gauge-label">구름량</span>
-          <div class="log-gauge-bar"><div class="log-gauge-fill" style="width:64%"></div></div>
-          <span class="log-gauge-feel">체감: 흐림</span>
-        </div>
+    <article class="project">
+      <div class="project-head">
+        <h3>고객 문의 자동화 AI Agent 시스템</h3>
+        <span class="tag">AI 에이전트</span>
+      </div>
+      <p class="project-desc">
+        디딤 AI Innovation Challenge 제출작. Claude Sonnet 4 API를 중심으로 고객 문의를 자동 분류하고,
+        담당자 라우팅과 초안 작성까지 처리하는 사내 업무 자동화 에이전트를 설계·구현했습니다.
+      </p>
+      <ul class="project-points">
+        <li>Flask 서버 2대(포트 5000/5001)로 요청 처리와 자동화 로직을 분리한 아키텍처 설계</li>
+        <li>NCP VPC API 연동으로 ACG(방화벽) 정책 자동 생성 — 중복 규칙 감지 로직 포함</li>
+        <li>Gmail SMTP, MS Teams Power Automate 웹훅, Confluence REST API 등 다중 외부 서비스 통합</li>
+      </ul>
+      <div class="stack">
+        <span>Python</span><span>Flask</span><span>Claude API</span><span>NCP VPC API</span><span>Confluence REST API</span>
+      </div>
+    </article>
+
+    <article class="project">
+      <div class="project-head">
+        <h3>NCP MCP Server</h3>
+        <span class="tag">오픈소스</span>
+      </div>
+      <p class="project-desc">
+        Naver Cloud Platform 리소스를 Claude와 같은 LLM 클라이언트에서 직접 조회·제어할 수 있도록 만든
+        TypeScript 기반 MCP(Model Context Protocol) 서버.
+      </p>
+      <div class="stack">
+        <span>TypeScript</span><span>Node.js</span><span>MCP SDK</span><span>NCP API</span>
+      </div>
+      <a class="project-link" href="https://github.com/pang-ec/ncp-mcp-server" target="_blank" rel="noopener">
+        github.com/pang-ec/ncp-mcp-server →
       </a>
     </article>
 
-    <article class="log-card">
-      <a class="log-card-link" href="posts/hypervisor-forensics.html">
-        <div class="log-meta">
-          <span class="log-date">2026.07.30</span>
-          <span class="log-tag">트러블슈팅</span>
-        </div>
-        <h3 class="log-title">서버가 스스로 재부팅됐다 — 리눅스 로그로 하이퍼바이저를 의심하기까지</h3>
-        <p class="log-excerpt">OS 레벨 종료 흔적은 없는데 서버는 재부팅됐다. journald, /var/log/messages, secure 로그를 하나씩 뒤진 기록과 KT Cloud에 남긴 지원 티켓.</p>
-        <div class="log-gauge">
-          <span class="log-gauge-label">구름량</span>
-          <div class="log-gauge-bar"><div class="log-gauge-fill" style="width:88%"></div></div>
-          <span class="log-gauge-feel">체감: 폭우</span>
-        </div>
-      </a>
+    <article class="project">
+      <div class="project-head">
+        <h3>Kubernetes 리소스 감사 및 QoS 최적화</h3>
+        <span class="tag">인프라 운영</span>
+      </div>
+      <p class="project-desc">
+        특정 네임스페이스의 QoS 클래스와 리소스 설정을 전수 점검하고, Prometheus PromQL로 7일간
+        CPU/메모리 사용량을 분석해 Guaranteed QoS 전환을 위한 리소스 값을 산정했습니다.
+      </p>
+      <ul class="project-points">
+        <li>실사용량 최대치 × 1.2 기준으로 CPU/메모리 요청·제한값 재산정 (10m/64Mi 단위 반올림)</li>
+        <li>4개 시트로 구성된 Excel 리포트 작성 (현황, 사용량 분석, 권장값, 요약)</li>
+        <li>메모리 사용량이 순간적으로 limit을 초과하고도 OOMKill이 발생하지 않은 사례를 ArgoCD 롤링 재배포 주기와 연결해 원인 규명</li>
+      </ul>
+      <div class="stack">
+        <span>Kubernetes</span><span>Prometheus</span><span>PromQL</span><span>ArgoCD</span>
+      </div>
     </article>
 
-    <article class="log-card">
-      <a class="log-card-link" href="posts/mcp-server-first-agent.html">
-        <div class="log-meta">
-          <span class="log-date">2026.07.12</span>
-          <span class="log-tag">AI 에이전트</span>
-        </div>
-        <h3 class="log-title">Claude API로 사내 자동화 만들기 — MCP Server 첫걸음</h3>
-        <p class="log-excerpt">Flask 서버 두 대, NCP VPC API, Confluence API로 문의 자동화 에이전트를 만들며 겪은 ACG 중복 규칙, JSON 파싱 실패, Adaptive Card 삽질기.</p>
-        <div class="log-gauge">
-          <span class="log-gauge-label">구름량</span>
-          <div class="log-gauge-bar"><div class="log-gauge-fill" style="width:45%"></div></div>
-          <span class="log-gauge-feel">체감: 구름 조금</span>
-        </div>
-      </a>
+    <article class="project">
+      <div class="project-head">
+        <h3>WAF·로드밸런서 트래픽 분석</h3>
+        <span class="tag">성능 분석</span>
+      </div>
+      <p class="project-desc">
+        대학 수강신청 이벤트 기간 NCP WAF/로드밸런서 트래픽 CSV 데이터를 분석해, 새로 적용한 3중화
+        구성 하에서 성능 이슈가 없었음을 확인하고 고객 대상 보고와 내부 튜닝 관찰 사항을 구분해 정리했습니다.
+      </p>
+      <div class="stack">
+        <span>NCP WAF</span><span>Load Balancer</span><span>데이터 분석</span>
+      </div>
     </article>
 
+    <article class="project">
+      <div class="project-head">
+        <h3>하이퍼바이저 레벨 장애 포렌식</h3>
+        <span class="tag">트러블슈팅</span>
+      </div>
+      <p class="project-desc">
+        원인 불명의 서버 하드 리부팅 건에서 journald·시스템 로그를 분석해 OS 레벨 원인을 모두 배제하고,
+        하이퍼바이저 레벨 개입 가능성을 특정해 KT Cloud에 정식 지원 티켓을 작성·요청했습니다.
+      </p>
+      <div class="stack">
+        <span>Linux</span><span>로그 포렌식</span><span>KT Cloud</span>
+      </div>
+    </article>
+
+  </div>
+
+  <div class="section-head section-head--gap">
+    <h2>기술 스택</h2>
+  </div>
+  <div class="skills">
+    <div class="skill-group">
+      <h4>클라우드 · 인프라</h4>
+      <div class="stack"><span>NCP (GOV)</span><span>AWS</span><span>KT Cloud</span><span>KT G-Cloud</span><span>Kubernetes</span></div>
+    </div>
+    <div class="skill-group">
+      <h4>개발 · 자동화</h4>
+      <div class="stack"><span>Python</span><span>Flask</span><span>TypeScript</span><span>Claude API</span><span>MCP SDK</span></div>
+    </div>
+    <div class="skill-group">
+      <h4>연동 · 운영 도구</h4>
+      <div class="stack"><span>NCP VPC API</span><span>Confluence REST API</span><span>Prometheus</span><span>ArgoCD</span><span>Power Automate</span></div>
+    </div>
   </div>
 </main>
 
-<div class="isobar isobar--flip" aria-hidden="true">
-  <svg viewBox="0 0 1200 24" preserveAspectRatio="none"><path d="M0,12 C150,2 300,22 450,12 C600,2 750,22 900,12 C1050,2 1150,18 1200,10" /></svg>
-</div>
+<section class="writing" id="writing">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>글</h2>
+    </div>
+    <div class="post-list">
+
+      <a class="post-row" href="posts/backup-policy-mismatch.html">
+        <span class="post-row-date">2026.08.21</span>
+        <span class="post-row-title">표준 백업 정책이 안 통하는 이유 — MVNO 고객사 아키텍처 분석기</span>
+        <span class="tag">아키텍처</span>
+      </a>
+
+      <a class="post-row" href="posts/hypervisor-forensics.html">
+        <span class="post-row-date">2026.07.30</span>
+        <span class="post-row-title">서버가 스스로 재부팅됐다 — 리눅스 로그로 하이퍼바이저를 의심하기까지</span>
+        <span class="tag">트러블슈팅</span>
+      </a>
+
+      <a class="post-row" href="posts/mcp-server-first-agent.html">
+        <span class="post-row-date">2026.07.12</span>
+        <span class="post-row-title">Claude API로 사내 자동화 만들기 — MCP Server 첫걸음</span>
+        <span class="tag">AI 에이전트</span>
+      </a>
+
+    </div>
+  </div>
+</section>
 
 <section class="about" id="about">
   <div class="wrap about-inner">
-    <div class="about-station">
-      <p class="eyebrow">STATION PROFILE</p>
-      <h2>관측소 소개</h2>
+    <div class="about-side">
+      <h2>소개</h2>
     </div>
     <div class="about-body">
       <p>
-        4년째 NCP · AWS · KT Cloud 위를 오가며 VIP 고객사의 인프라를 운영하는 클라우드 엔지니어입니다.
-        구름(클라우드) 위에서 매일 만나는 장애, 설계 고민, 그리고 요즘 붙잡고 있는 AI 에이전트 실험들을
-        이곳에 기록합니다.
+        디딤365 Managed Services Group에서 4년 이상 VIP 등급 고객사의 클라우드 인프라를 운영하고 있습니다.
+        NCP(GOV 리전 포함) · KT Cloud · KT G-Cloud · AWS를 넘나들며 운영·마이그레이션·장애 대응을 담당하고,
+        최근에는 Claude API와 MCP를 활용한 업무 자동화 에이전트 개발까지 영역을 넓히고 있습니다.
       </p>
       <ul class="about-facts">
-        <li><span>담당 영역</span>NCP · KT Cloud · AWS 운영 및 마이그레이션</li>
-        <li><span>최근 관심사</span>Claude API · MCP 기반 사내 자동화</li>
-        <li><span>코드</span><a href="https://github.com/pang-ec" target="_blank" rel="noopener">github.com/pang-ec</a></li>
+        <li><span>소속</span>디딤365 · Managed Services Group (대리)</li>
+        <li><span>경력</span>2022.05 ~ 현재</li>
+        <li><span>담당 고객사</span>연세대학교 · 광명시청 · 네이블커뮤니케이션즈 (VIP 등급)</li>
+        <li><span>자격증</span>NCP Professional (2023.11)</li>
+        <li><span>학력</span>유원대학교 자동차소프트웨어학과 (GPA 3.8/4.5)</li>
+        <li><span>수상</span>2021 혁신성장 청년인재 집중양성 공모전 금상 (2022)</li>
+        <li><span>GitHub</span><a href="https://github.com/pang-ec" target="_blank" rel="noopener">github.com/pang-ec</a></li>
       </ul>
     </div>
   </div>
@@ -147,7 +205,7 @@
 
 <footer class="site-footer">
   <div class="wrap footer-inner">
-    <span>© 2026 뜬구름 잡는 이야기</span>
+    <span>© 2026 조은찬</span>
     <a href="https://github.com/pang-ec" target="_blank" rel="noopener">GitHub</a>
   </div>
 </footer>
