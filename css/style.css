@@ -11,8 +11,8 @@
   --accent:     #2F4B7A;
   --accent-soft:#EEF1F6;
 
-  --font-display: 'Pretendard', -apple-system, sans-serif;
-  --font-body:    'Pretendard', -apple-system, sans-serif;
+  --font-display: '맑은 고딕', 'Malgun Gothic', 'Pretendard', -apple-system, sans-serif;
+  --font-body:    '맑은 고딕', 'Malgun Gothic', 'Pretendard', -apple-system, sans-serif;
   --font-mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 
   --wrap: 860px;
