@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>표준 백업 정책이 안 통하는 이유 — 뜬구름 잡는 이야기</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="../index.html">
+      <span class="brand-mark" aria-hidden="true">☁</span>
+      <span class="brand-text">뜬구름 잡는 이야기</span>
+    </a>
+    <nav class="site-nav">
+      <a href="../index.html#log">관측 기록</a>
+      <a href="../index.html#about">관측소 소개</a>
+      <a href="https://github.com/pang-ec" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<section class="post-hero wrap">
+  <p class="post-breadcrumb"><a href="../index.html#log">관측 기록</a> / 아키텍처</p>
+  <h1 class="post-title">표준 백업 정책이 안 통하는 이유<br>— MVNO 고객사 아키텍처 분석기</h1>
+  <div class="post-meta-bar">
+    <span>2026.08.21</span>
+    <span class="log-tag">아키텍처</span>
+    <span>구름량 64% · 체감 흐림</span>
+  </div>
+</section>
+
+<article class="post-body wrap">
+  <p>새로 온보딩하는 MVNO 고객사의 AWS 서울 리전 환경에 표준 백업 정책 템플릿을 그대로 적용하려다 막혔다.
+  템플릿이 전제하는 세 가지가 이 환경엔 없었기 때문이다.</p>
+
+  <h2>템플릿이 가정하는 것들</h2>
+  <ul>
+    <li>EKS 워크로드의 PV/PVC 스냅샷</li>
+    <li>자체 관리형 DB 인스턴스</li>
+    <li>야간 배치로 도는 증분 백업 스크립트</li>
+  </ul>
+
+  <h2>실제 환경은 달랐다</h2>
+  <p>이 고객사는 EKS를 쓰지 않고, RDS를 관리형으로 운영하며, AWS Backup이 증분 스냅샷을 자동으로 처리하고 있었다.
+  즉 템플릿이 대응하려던 "직접 관리해야 하는 위험" 자체가 애초에 존재하지 않는 구조였다.</p>
+
+  <div class="post-note">
+    이 부분은 실제 고객사 아키텍처를 요약한 예시 초안입니다. 발행 전 세부 내용과 수치를 다시 확인하고 채워 넣으세요.
+  </div>
+
+  <h2>팀장님께 어떻게 설명했나</h2>
+  <p>"정책이 없다"가 아니라 "정책이 이미 AWS 관리 영역으로 이관되어 있다"는 관점으로 설명을 바꾸자 훨씬 쉽게 납득이 됐다.
+  대신 우리가 새로 정의해야 했던 건 AWS Backup 플랜의 보존 주기와, 관리형 서비스 밖에 있는 극소수 리소스에 대한 별도 백업 규칙이었다.</p>
+
+  <h3>정리</h3>
+  <p>표준 템플릿은 "가장 흔한 패턴"을 가정할 뿐, 모든 환경에 강제로 맞출 대상이 아니다.
+  중요한 건 템플릿을 지키는 게 아니라 템플릿이 방어하려던 위험이 이 환경에도 실제로 존재하는지를 먼저 확인하는 것.</p>
+</article>
+
+<div class="wrap post-footer-nav">
+  <a href="../index.html#log">← 관측 기록으로</a>
+  <a href="hypervisor-forensics.html">다음 글 →</a>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <span>© 2026 뜬구름 잡는 이야기</span>
+    <a href="https://github.com/pang-ec" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</footer>
+
+</body>
+</html>

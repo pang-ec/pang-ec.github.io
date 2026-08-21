@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>뜬구름 잡는 이야기 — 클라우드 관측 일지</title>
+<meta name="description" content="클라우드 인프라 엔지니어가 실무에서 겪은 트러블슈팅, 아키텍처, AI 에이전트 이야기를 기록하는 관측 일지.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JetBrains-Mono/2.304/webfonts/JetBrainsMono-Regular.woff2" as="font" crossorigin>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">☁</span>
+      <span class="brand-text">뜬구름 잡는 이야기</span>
+    </a>
+    <nav class="site-nav">
+      <a href="#log">관측 기록</a>
+      <a href="#about">관측소 소개</a>
+      <a href="https://github.com/pang-ec" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <p class="eyebrow">CLOUD OBSERVATION LOG · SEOUL</p>
+    <h1 class="hero-title">
+      뜬<span class="hero-gap"></span>구름<span class="hero-gap"></span>잡는<br>
+      이야기
+    </h1>
+    <p class="hero-sub">
+      매일 NCP·AWS·KT Cloud 위를 떠다니는 문제들을 붙잡아<br class="br-desktop">
+      글로 정리하는 클라우드 인프라 엔지니어의 관측 일지.
+    </p>
+
+    <div class="gauge" role="img" aria-label="오늘의 구름량 72퍼센트, 체감 흐림">
+      <div class="gauge-row">
+        <span class="gauge-label">오늘의 구름량</span>
+        <span class="gauge-value">72%</span>
+      </div>
+      <div class="gauge-bar">
+        <div class="gauge-puffs" id="gaugePuffs"></div>
+        <div class="gauge-fill" style="width:72%"></div>
+      </div>
+      <div class="gauge-row gauge-row--small">
+        <span>체감: 흐림 · 트러블슈팅 다수</span>
+        <span class="gauge-updated">업데이트 2026.08.21</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sky" aria-hidden="true">
+    <div class="cloud cloud--a"></div>
+    <div class="cloud cloud--b"></div>
+    <div class="cloud cloud--c"></div>
+  </div>
+</section>
+
+<div class="isobar" aria-hidden="true">
+  <svg viewBox="0 0 1200 24" preserveAspectRatio="none"><path d="M0,12 C150,2 300,22 450,12 C600,2 750,22 900,12 C1050,2 1150,18 1200,10" /></svg>
+</div>
+
+<main class="wrap" id="log">
+  <div class="section-head">
+    <h2>관측 기록 <span class="section-head-en">POST LOG</span></h2>
+    <p class="section-desc">각 글에는 다루는 문제의 <strong>구름량(복잡도)</strong>과 <strong>체감 난이도</strong>를 표시합니다.</p>
+  </div>
+
+  <div class="log-list">
+
+    <article class="log-card">
+      <a class="log-card-link" href="posts/backup-policy-mismatch.html">
+        <div class="log-meta">
+          <span class="log-date">2026.08.21</span>
+          <span class="log-tag">아키텍처</span>
+        </div>
+        <h3 class="log-title">표준 백업 정책이 안 통하는 이유 — MVNO 고객사 아키텍처 분석기</h3>
+        <p class="log-excerpt">EKS PV/PVC도 없고, RDS는 관리형이고, 스냅샷은 AWS가 알아서 챙긴다면? 표준 백업 정책 템플릿이 왜 이 환경엔 안 맞는지 팀장님께 설명한 과정.</p>
+        <div class="log-gauge">
+          <span class="log-gauge-label">구름량</span>
+          <div class="log-gauge-bar"><div class="log-gauge-fill" style="width:64%"></div></div>
+          <span class="log-gauge-feel">체감: 흐림</span>
+        </div>
+      </a>
+    </article>
+
+    <article class="log-card">
+      <a class="log-card-link" href="posts/hypervisor-forensics.html">
+        <div class="log-meta">
+          <span class="log-date">2026.07.30</span>
+          <span class="log-tag">트러블슈팅</span>
+        </div>
+        <h3 class="log-title">서버가 스스로 재부팅됐다 — 리눅스 로그로 하이퍼바이저를 의심하기까지</h3>
+        <p class="log-excerpt">OS 레벨 종료 흔적은 없는데 서버는 재부팅됐다. journald, /var/log/messages, secure 로그를 하나씩 뒤진 기록과 KT Cloud에 남긴 지원 티켓.</p>
+        <div class="log-gauge">
+          <span class="log-gauge-label">구름량</span>
+          <div class="log-gauge-bar"><div class="log-gauge-fill" style="width:88%"></div></div>
+          <span class="log-gauge-feel">체감: 폭우</span>
+        </div>
+      </a>
+    </article>
+
+    <article class="log-card">
+      <a class="log-card-link" href="posts/mcp-server-first-agent.html">
+        <div class="log-meta">
+          <span class="log-date">2026.07.12</span>
+          <span class="log-tag">AI 에이전트</span>
+        </div>
+        <h3 class="log-title">Claude API로 사내 자동화 만들기 — MCP Server 첫걸음</h3>
+        <p class="log-excerpt">Flask 서버 두 대, NCP VPC API, Confluence API로 문의 자동화 에이전트를 만들며 겪은 ACG 중복 규칙, JSON 파싱 실패, Adaptive Card 삽질기.</p>
+        <div class="log-gauge">
+          <span class="log-gauge-label">구름량</span>
+          <div class="log-gauge-bar"><div class="log-gauge-fill" style="width:45%"></div></div>
+          <span class="log-gauge-feel">체감: 구름 조금</span>
+        </div>
+      </a>
+    </article>
+
+  </div>
+</main>
+
+<div class="isobar isobar--flip" aria-hidden="true">
+  <svg viewBox="0 0 1200 24" preserveAspectRatio="none"><path d="M0,12 C150,2 300,22 450,12 C600,2 750,22 900,12 C1050,2 1150,18 1200,10" /></svg>
+</div>
+
+<section class="about" id="about">
+  <div class="wrap about-inner">
+    <div class="about-station">
+      <p class="eyebrow">STATION PROFILE</p>
+      <h2>관측소 소개</h2>
+    </div>
+    <div class="about-body">
+      <p>
+        4년째 NCP · AWS · KT Cloud 위를 오가며 VIP 고객사의 인프라를 운영하는 클라우드 엔지니어입니다.
+        구름(클라우드) 위에서 매일 만나는 장애, 설계 고민, 그리고 요즘 붙잡고 있는 AI 에이전트 실험들을
+        이곳에 기록합니다.
+      </p>
+      <ul class="about-facts">
+        <li><span>담당 영역</span>NCP · KT Cloud · AWS 운영 및 마이그레이션</li>
+        <li><span>최근 관심사</span>Claude API · MCP 기반 사내 자동화</li>
+        <li><span>코드</span><a href="https://github.com/pang-ec" target="_blank" rel="noopener">github.com/pang-ec</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <span>© 2026 뜬구름 잡는 이야기</span>
+    <a href="https://github.com/pang-ec" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

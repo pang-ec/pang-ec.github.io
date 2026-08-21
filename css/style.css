@@ -1,0 +1,268 @@
+/* ==========================================================
+   뜬구름 잡는 이야기 — Cloud Observation Log
+   Token system
+   ========================================================== */
+:root{
+  --sky-base:   #E9EEF3;
+  --sky-deep:   #C7D3DE;
+  --ink:        #22303F;
+  --ink-soft:   #5B6B7A;
+  --gold:       #D9A257;
+  --white:      #FAFBFC;
+
+  --font-display: 'Pretendard', -apple-system, sans-serif;
+  --font-body:    'Pretendard', -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --wrap: 1080px;
+}
+
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  background:var(--sky-base);
+  color:var(--ink);
+  font-family:var(--font-body);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+a{ color:inherit; text-decoration:none; }
+.wrap{ max-width:var(--wrap); margin:0 auto; padding:0 24px; }
+
+/* ---------- Header ---------- */
+.site-header{
+  position:sticky; top:0; z-index:20;
+  background:rgba(233,238,243,0.86);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(34,48,63,0.08);
+}
+.header-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  height:64px;
+}
+.brand{ display:flex; align-items:center; gap:8px; font-weight:800; font-size:16px; letter-spacing:-0.01em; }
+.brand-mark{ font-size:18px; color:var(--gold); }
+.site-nav{ display:flex; gap:28px; font-size:14px; font-weight:500; color:var(--ink-soft); }
+.site-nav a:hover{ color:var(--ink); }
+
+/* ---------- Hero ---------- */
+.hero{
+  position:relative;
+  overflow:hidden;
+  padding:88px 0 64px;
+}
+.hero-inner{ position:relative; z-index:2; }
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:12px;
+  letter-spacing:0.14em;
+  color:var(--ink-soft);
+  margin:0 0 20px;
+  text-transform:uppercase;
+}
+.hero-title{
+  font-family:var(--font-display);
+  font-weight:900;
+  font-size:clamp(40px, 7vw, 76px);
+  line-height:1.06;
+  letter-spacing:-0.02em;
+  margin:0 0 24px;
+}
+.hero-gap{ display:inline-block; width:0.4em; }
+.hero-sub{
+  font-size:17px;
+  color:var(--ink-soft);
+  max-width:520px;
+  margin:0 0 44px;
+}
+.br-desktop{ display:inline; }
+
+/* signature gauge element */
+.gauge{
+  max-width:460px;
+  background:var(--white);
+  border:1px solid rgba(34,48,63,0.08);
+  border-radius:14px;
+  padding:18px 20px;
+  box-shadow:0 12px 32px -18px rgba(34,48,63,0.35);
+}
+.gauge-row{
+  display:flex; justify-content:space-between; align-items:baseline;
+  font-family:var(--font-mono);
+}
+.gauge-label{ font-size:12px; color:var(--ink-soft); letter-spacing:0.04em; }
+.gauge-value{ font-size:20px; font-weight:700; color:var(--ink); }
+.gauge-bar{
+  position:relative;
+  height:10px;
+  margin:10px 0 8px;
+  border-radius:6px;
+  background:var(--sky-deep);
+  overflow:hidden;
+}
+.gauge-fill{
+  height:100%;
+  background:linear-gradient(90deg, var(--gold), #E8BD82);
+  border-radius:6px;
+}
+.gauge-row--small{ font-size:11px; color:var(--ink-soft); font-family:var(--font-mono); margin-top:2px; }
+.gauge-updated{ opacity:0.7; }
+
+/* ambient drifting clouds */
+.sky{ position:absolute; inset:0; z-index:1; pointer-events:none; }
+.cloud{
+  position:absolute;
+  background:var(--white);
+  opacity:0.55;
+  border-radius:100px;
+  filter:blur(0.5px);
+}
+.cloud::before, .cloud::after{
+  content:''; position:absolute; background:inherit; border-radius:100px;
+}
+.cloud--a{ width:220px; height:56px; top:14%; left:-10%; animation:drift 52s linear infinite; }
+.cloud--a::before{ width:110px; height:80px; top:-40px; left:20px; }
+.cloud--a::after{ width:90px; height:60px; top:-24px; left:110px; }
+.cloud--b{ width:160px; height:44px; top:52%; left:-14%; opacity:0.4; animation:drift 68s linear infinite; animation-delay:-20s; }
+.cloud--b::before{ width:80px; height:60px; top:-30px; left:16px; }
+.cloud--b::after{ width:60px; height:44px; top:-18px; left:84px; }
+.cloud--c{ width:130px; height:36px; top:76%; left:-8%; opacity:0.3; animation:drift 40s linear infinite; animation-delay:-8s; }
+.cloud--c::before{ width:60px; height:44px; top:-22px; left:10px; }
+.cloud--c::after{ width:50px; height:34px; top:-14px; left:64px; }
+
+@keyframes drift{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(140vw); }
+}
+@media (prefers-reduced-motion: reduce){
+  .cloud{ animation:none !important; }
+}
+
+/* isobar divider (structural, echoes contour lines on a weather map) */
+.isobar{ width:100%; overflow:hidden; line-height:0; color:var(--sky-deep); }
+.isobar--flip{ transform:scaleY(-1); }
+.isobar svg{ width:100%; height:24px; display:block; }
+.isobar svg path{ fill:none; stroke:currentColor; stroke-width:2; }
+
+/* ---------- Log / post list ---------- */
+main.wrap{ padding:64px 24px 20px; }
+.section-head{ margin-bottom:36px; }
+.section-head h2{
+  font-family:var(--font-display);
+  font-weight:800;
+  font-size:26px;
+  margin:0 0 8px;
+  letter-spacing:-0.01em;
+}
+.section-head-en{
+  font-family:var(--font-mono);
+  font-size:12px;
+  font-weight:500;
+  color:var(--ink-soft);
+  letter-spacing:0.12em;
+  margin-left:10px;
+  vertical-align:middle;
+}
+.section-desc{ color:var(--ink-soft); font-size:14px; margin:0; }
+
+.log-list{ display:flex; flex-direction:column; gap:16px; }
+.log-card{
+  background:var(--white);
+  border:1px solid rgba(34,48,63,0.08);
+  border-radius:14px;
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.log-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 16px 36px -22px rgba(34,48,63,0.4);
+  border-color:rgba(34,48,63,0.14);
+}
+.log-card-link{ display:block; padding:26px 28px; }
+.log-meta{ display:flex; gap:12px; align-items:center; margin-bottom:10px; }
+.log-date{ font-family:var(--font-mono); font-size:12px; color:var(--ink-soft); }
+.log-tag{
+  font-family:var(--font-mono); font-size:11px; letter-spacing:0.04em;
+  color:var(--gold); background:rgba(217,162,87,0.14);
+  padding:3px 8px; border-radius:100px;
+}
+.log-title{
+  font-family:var(--font-display);
+  font-size:19px; font-weight:700; line-height:1.4;
+  margin:0 0 8px; letter-spacing:-0.01em;
+}
+.log-excerpt{ font-size:14px; color:var(--ink-soft); margin:0 0 18px; max-width:640px; }
+
+.log-gauge{ display:flex; align-items:center; gap:10px; font-family:var(--font-mono); font-size:11px; color:var(--ink-soft); }
+.log-gauge-bar{ width:120px; height:6px; border-radius:4px; background:var(--sky-deep); overflow:hidden; }
+.log-gauge-fill{ height:100%; background:var(--gold); border-radius:4px; }
+.log-gauge-feel{ margin-left:auto; }
+
+/* ---------- About / station profile ---------- */
+.about{ background:var(--white); border-top:1px solid rgba(34,48,63,0.08); border-bottom:1px solid rgba(34,48,63,0.08); }
+.about-inner{ padding:64px 24px; display:grid; grid-template-columns:280px 1fr; gap:48px; }
+.about-station h2{ font-family:var(--font-display); font-size:24px; font-weight:800; margin:0; letter-spacing:-0.01em; }
+.about-body p{ margin:0 0 24px; color:var(--ink-soft); max-width:560px; }
+.about-facts{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; font-size:14px; }
+.about-facts li{ display:flex; gap:16px; }
+.about-facts li span{ font-family:var(--font-mono); font-size:11px; color:var(--gold); min-width:90px; padding-top:2px; }
+.about-facts a{ text-decoration:underline; text-underline-offset:3px; }
+
+/* ---------- Footer ---------- */
+.site-footer{ padding:32px 24px; }
+.footer-inner{ display:flex; justify-content:space-between; font-size:13px; color:var(--ink-soft); font-family:var(--font-mono); }
+.footer-inner a:hover{ color:var(--ink); }
+
+/* ---------- Responsive ---------- */
+@media (max-width:720px){
+  .site-nav{ gap:16px; font-size:13px; }
+  .hero{ padding:64px 0 48px; }
+  .br-desktop{ display:none; }
+  .about-inner{ grid-template-columns:1fr; gap:20px; }
+  .log-card-link{ padding:20px; }
+  .log-gauge-bar{ width:80px; }
+}
+
+/* ---------- Post article page ---------- */
+.post-hero{ padding:56px 0 40px; }
+.post-breadcrumb{
+  font-family:var(--font-mono); font-size:12px; color:var(--ink-soft);
+  margin:0 0 20px;
+}
+.post-breadcrumb a{ text-decoration:underline; text-underline-offset:3px; }
+.post-title{
+  font-family:var(--font-display); font-weight:800;
+  font-size:clamp(26px,4vw,38px); line-height:1.3; letter-spacing:-0.01em;
+  margin:0 0 20px;
+}
+.post-meta-bar{
+  display:flex; flex-wrap:wrap; gap:18px; align-items:center;
+  font-family:var(--font-mono); font-size:12px; color:var(--ink-soft);
+  padding-bottom:24px; border-bottom:1px solid rgba(34,48,63,0.1);
+}
+.post-meta-bar .log-tag{ font-family:var(--font-mono); }
+.post-body{ max-width:680px; padding:40px 0 80px; font-size:16px; }
+.post-body p{ margin:0 0 20px; color:var(--ink); }
+.post-body h2{ font-family:var(--font-display); font-size:22px; font-weight:800; margin:40px 0 14px; letter-spacing:-0.01em; }
+.post-body h3{ font-family:var(--font-display); font-size:18px; font-weight:700; margin:32px 0 12px; }
+.post-body ul, .post-body ol{ margin:0 0 20px; padding-left:22px; color:var(--ink); }
+.post-body li{ margin-bottom:8px; }
+.post-body code{ font-family:var(--font-mono); font-size:13px; background:var(--sky-deep); padding:2px 6px; border-radius:4px; }
+.post-body pre{ background:var(--ink); color:var(--white); padding:18px 20px; border-radius:10px; overflow-x:auto; font-family:var(--font-mono); font-size:13px; margin:0 0 20px; }
+.post-body pre code{ background:none; padding:0; }
+.post-note{
+  background:var(--white); border:1px solid rgba(34,48,63,0.08); border-left:3px solid var(--gold);
+  border-radius:8px; padding:14px 18px; font-size:14px; color:var(--ink-soft); margin:0 0 24px;
+}
+.post-footer-nav{
+  border-top:1px solid rgba(34,48,63,0.1); padding-top:24px;
+  display:flex; justify-content:space-between; font-size:14px;
+}
+.post-footer-nav a{ text-decoration:underline; text-underline-offset:3px; }
+
+/* ---------- Focus visibility ---------- */
+a:focus-visible, button:focus-visible{
+  outline:2px solid var(--gold);
+  outline-offset:2px;
+  border-radius:4px;
+}

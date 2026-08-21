@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서버가 스스로 재부팅됐다 — 뜬구름 잡는 이야기</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="../index.html">
+      <span class="brand-mark" aria-hidden="true">☁</span>
+      <span class="brand-text">뜬구름 잡는 이야기</span>
+    </a>
+    <nav class="site-nav">
+      <a href="../index.html#log">관측 기록</a>
+      <a href="../index.html#about">관측소 소개</a>
+      <a href="https://github.com/pang-ec" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<section class="post-hero wrap">
+  <p class="post-breadcrumb"><a href="../index.html#log">관측 기록</a> / 트러블슈팅</p>
+  <h1 class="post-title">서버가 스스로 재부팅됐다<br>— 리눅스 로그로 하이퍼바이저를 의심하기까지</h1>
+  <div class="post-meta-bar">
+    <span>2026.07.30</span>
+    <span class="log-tag">트러블슈팅</span>
+    <span>구름량 88% · 체감 폭우</span>
+  </div>
+</section>
+
+<article class="post-body wrap">
+  <p>KT Cloud 위에서 운영 중인 DB 서버가 예고 없이 재부팅됐다. 문제는 OS 레벨에서
+  종료 명령이 실행된 흔적이 전혀 없었다는 것.</p>
+
+  <h2>확인한 것들</h2>
+  <ul>
+    <li><code>journald</code>가 volatile 모드라 재부팅 전 로그가 메모리와 함께 날아감</li>
+    <li><code>/var/log/messages</code>가 정상 종료 시퀀스 없이 뚝 끊김</li>
+    <li><code>/var/log/secure</code>에 reboot/shutdown 명령 실행 이력이 없음</li>
+  </ul>
+
+  <div class="post-note">
+    실제 조사에 사용한 로그 경로와 명령어를 이 자리에 채워 넣으면 훨씬 설득력 있는 글이 됩니다.
+  </div>
+
+  <h2>결론: OS가 아니라 그 아래를 봐야 한다</h2>
+  <p>OS 레벨 원인이 전부 배제되고 나면 남는 건 하이퍼바이저 레벨의 개입뿐이다.
+  이 지점부터는 우리 쪽 로그만으로는 더 파고들 수 없어서, KT Cloud에 특정 시각의
+  하이퍼바이저 이벤트 로그와 인스턴스 이벤트 로그를 요청하는 티켓을 작성했다.</p>
+
+  <h3>티켓에 넣은 핵심 요청 사항</h3>
+  <ol>
+    <li>재부팅 발생 시각 전후 하이퍼바이저 이벤트 로그</li>
+    <li>해당 인스턴스에 대한 플랫폼 측 마이그레이션/헬스체크 이력</li>
+    <li>동일 호스트의 다른 인스턴스에 동시간대 이상 여부</li>
+  </ol>
+
+  <p>인프라 엔지니어 입장에서 "우리 쪽엔 원인이 없다"를 증명하는 것도 결국 로그로 하나씩
+  가능성을 소거해나가는 작업이라는 걸 다시 확인한 사례였다.</p>
+</article>
+
+<div class="wrap post-footer-nav">
+  <a href="backup-policy-mismatch.html">← 이전 글</a>
+  <a href="mcp-server-first-agent.html">다음 글 →</a>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <span>© 2026 뜬구름 잡는 이야기</span>
+    <a href="https://github.com/pang-ec" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</footer>
+
+</body>
+</html>
