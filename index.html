@@ -120,11 +120,30 @@
 
     <article class="project">
       <div class="project-head">
+        <h3>AWS Backup 정책 설계 및 자동화 구축</h3>
+        <span class="tag">보안 · 컴플라이언스</span>
+      </div>
+      <p class="project-desc">
+        MVNO(알뜰폰) 서비스를 운영하는 고객사의 AWS 인프라 인수 후, 리소스별 민감도에 따라
+        차등화된 백업 정책을 설계하고 EC2·EKS 대상 자동화를 구축했습니다.
+      </p>
+      <ul class="project-points">
+        <li>RDS·EFS는 기존 자동 백업체계 유지, ElastiCache는 휘발성 데이터로 판단해 대상에서 제외하는 등 리소스별 차등 정책 설계</li>
+        <li>ISMS-MVNO 인증 요구사항(백업/로그 분리 저장, 암호화, 정기 복구 테스트)과 AWS Backup 기능을 항목별로 매핑</li>
+        <li>CloudFormation 기반 Instance Scheduler 배포 중 발생한 KMS 필드 오류를 진단·해결해 EC2 시작·중지 자동화 적용</li>
+      </ul>
+      <div class="stack">
+        <span>AWS Backup</span><span>CloudFormation</span><span>EKS</span><span>ISMS-MVNO</span>
+      </div>
+    </article>
+
+    <article class="project">
+      <div class="project-head">
         <h3>ISMS-P 인증 심사 대응</h3>
         <span class="tag">보안 · 컴플라이언스</span>
       </div>
       <p class="project-desc">
-        연세대학교·케이티커머스 고객사의 ISMS-P 인증 심사 과정에서 클라우드 인프라 영역
+        대학·커머스 플랫폼 고객사의 ISMS-P 인증 심사 과정에서 클라우드 인프라 영역
         (접근통제, 네트워크 구성, 로그 관리) 통제 항목에 대한 증적자료 준비·제출을 담당했습니다.
       </p>
       <ul class="project-points">
@@ -219,7 +238,7 @@
       <ul class="about-facts">
         <li><span>소속</span>디딤365 · Managed Services Group (대리)</li>
         <li><span>경력</span>2022.05 ~ 현재</li>
-        <li><span>담당 고객사</span>연세대학교 · 광명시청 · 네이블커뮤니케이션즈 (VIP 등급)</li>
+        <li><span>담당 고객사</span>대학·지자체·커머스 플랫폼 등 (VIP 등급)</li>
         <li><span>자격증</span>NCP Professional (2023.11)</li>
         <li><span>학력</span>유원대학교 자동차소프트웨어학과 (GPA 3.8/4.5)</li>
         <li><span>수상</span>2021 혁신성장 청년인재 집중양성 공모전 금상 (2022)</li>
