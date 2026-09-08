@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>운영시간에만 켜지는 서버 — Instance Scheduler on AWS로 EC2 비용 절감하기</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="../index.html">조은찬</a>
+    <nav class="site-nav">
+      <a href="../index.html#projects">프로젝트</a>
+      <a href="../index.html#writing">글</a>
+      <a href="../index.html#about">소개</a>
+      <a href="https://github.com/pang-ec" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<section class="post-hero wrap">
+  <p class="post-breadcrumb"><a href="../index.html#writing">글</a> / 인프라 운영</p>
+  <h1 class="post-title">운영시간에만 켜지는 서버<br>— Instance Scheduler on AWS로 EC2 비용 절감하기</h1>
+  <div class="post-meta-bar">
+    <span>2026.09.08</span>
+    <span class="tag">인프라 운영</span>
+  </div>
+</section>
+
+<article class="post-body wrap">
+  <p>24시간 켤 필요 없는 EC2 인스턴스가 그냥 계속 돌아가고 있는 경우는 생각보다 많다.
+  개발/테스트 서버, 사내 도구, 배치 전용 인스턴스 같은 것들이 대표적이다. 이런 자원을
+  정해진 운영시간에만 켜두도록 자동화하면 단순 계산으로도 상당한 비용을 아낄 수 있다.
+  AWS 공식 솔루션인 Instance Scheduler on AWS를 테스트 계정에 배포해 실제로
+  태그 기반 자동 시작/중지가 되는지 검증한 과정을 정리한다.</p>
+
+  <h2>왜 태그 기반 스케줄링인가</h2>
+  <p>가장 단순한 방법은 EventBridge 규칙 하나에 특정 인스턴스 ID를 박아 넣고 정해진
+  시각에 Lambda로 start/stop을 호출하는 것이다. 인스턴스가 한두 개면 이걸로도 충분하다.
+  하지만 대상이 계속 늘어나거나, 인스턴스마다 다른 운영시간이 필요해지는 순간 이 방식은
+  금방 관리 불가능해진다. 인스턴스가 추가될 때마다 규칙을 손으로 고쳐야 하고, 어떤
+  인스턴스가 어떤 스케줄을 따르는지 한눈에 보이지도 않는다.</p>
+  <p>Instance Scheduler on AWS는 이 문제를 <strong>태그 기반</strong>으로 푼다. 인스턴스에
+  <code>Schedule=office-hours</code> 같은 태그만 붙이면, 5분마다 도는 Lambda가 태그를 읽어서
+  알아서 시작/중지를 판단한다. 새 인스턴스가 생겨도 태그만 붙이면 끝이고, 어떤
+  인스턴스가 어떤 스케줄을 따르는지도 태그만 보면 바로 알 수 있다.</p>
+
+  <h2>배포 구조</h2>
+  <p>솔루션은 CloudFormation(CDK 기반)으로 한 번에 배포된다. 스택을 만들면 아래가
+  한꺼번에 생성된다.</p>
+  <ul>
+    <li>DynamoDB 테이블(스케줄/기간 설정 저장)</li>
+    <li>스케줄링 로직을 실행하는 Lambda 함수들</li>
+    <li>5분 간격으로 Lambda를 깨우는 EventBridge 규칙</li>
+    <li>동작 로그를 남기는 CloudWatch Logs</li>
+  </ul>
+  <p>배포 자체는 리소스가 많아(IAM 역할 20개 이상, Lambda 여러 개 등) 3~5분 정도
+  걸리지만, 일단 배포되면 이후로는 신경 쓸 일이 거의 없다.</p>
+
+  <h2>스케줄 정의하기</h2>
+  <p>관리 UI는 따로 없고, DynamoDB <code>ConfigTable</code>이 곧 설정 저장소다. 스케줄은
+  두 종류의 항목으로 구성된다.</p>
+
+  <h3>Period — 시간 조건 하나</h3>
+  <pre><code>{
+  "type": { "S": "period" },
+  "name": { "S": "office-hours" },
+  "begintime": { "S": "09:00" },
+  "endtime": { "S": "18:00" }
+}</code></pre>
+
+  <h3>Schedule — Period를 이름으로 묶은 것</h3>
+  <pre><code>{
+  "type": { "S": "schedule" },
+  "name": { "S": "office-hours" },
+  "periods": { "SS": ["office-hours"] },
+  "timezone": { "S": "Asia/Seoul" }
+}</code></pre>
+
+  <div class="post-note">
+    이렇게 나눠놓은 이유는 재사용성 때문이다. Period 하나("평일 9-18시")를 만들어두면
+    여러 Schedule이 이걸 공유해서 쓸 수 있고, Schedule마다 다른 Period 조합(예: 평일용 +
+    주말 점검용)을 붙이는 것도 가능하다. 인스턴스 입장에서는 Schedule 이름만 알면 되고,
+    구체적인 시간 로직은 Period가 따로 관리한다.
+  </div>
+
+  <h2>태그 붙이고 검증</h2>
+  <p>대상 인스턴스에 <code>Schedule</code> 키로 스케줄 이름을 값으로 붙이면 끝이다.</p>
+  <pre><code>Key: Schedule
+Value: office-hours</code></pre>
+  <p>동작 확인은 두 단계로 했다. 먼저 EC2 콘솔에서 인스턴스 상태가 지정한 시각에 맞춰
+  <code>running</code> ↔ <code>stopped</code>로 바뀌는지 직접 지켜봤고, 동시에 CloudWatch
+  Logs에서 <code>schedulingRequestHandlerLambda</code> 관련 로그를 열어 실제로 태그를
+  읽고 스케줄을 매칭해서 액션을 수행했는지 상세 로그로도 교차 확인했다. 정지 시각을 짧게
+  잡아 테스트한 결과, 지정한 종료 시각 이후 다음 5분 주기 실행에서 정확히 인스턴스가
+  정지되는 걸 확인했다.</p>
+
+  <h2>실무 적용 시 고려할 점</h2>
+  <p>테스트 계정에서는 문제없이 됐지만, 실제 고객사 계정에 적용하려면 몇 가지를
+  더 신경 써야 한다.</p>
+  <ul>
+    <li><strong>태그 값 명명 규칙</strong> — <code>Schedule=stop</code> 처럼 모호한 값 대신
+    팀/서비스명을 포함시켜 오적용을 방지 (예: <code>Schedule=team-dev-office-hours</code>)</li>
+    <li><strong>태그 편집 권한 제한</strong> — 실서비스 인스턴스가 실수로 스케줄링 대상이
+    되지 않도록 IAM 정책으로 <code>Schedule</code> 태그 편집 권한을 제한하는 게 안전하다</li>
+    <li><strong>지원 대상 확인</strong> — EC2/RDS/ASG만 지원하며, EKS 같은 컨테이너 워크로드는
+    대상이 아니다 (관리형 노드그룹은 내부적으로 ASG를 쓰므로 간접 적용은 가능)</li>
+    <li><strong>변경 관리</strong> — 자동 시작/중지가 서비스 가용성에 영향을 줄 수 있는 만큼,
+    최초 적용 시에는 변경 관리 프로세스를 거치는 게 안전하다</li>
+  </ul>
+
+  <h3>정리</h3>
+  <ol>
+    <li>인스턴스가 늘어날수록 개별 EventBridge 규칙보다 태그 기반 스케줄링이 관리하기 쉽다</li>
+    <li>Period(시간 조건)와 Schedule(이름 묶음)을 분리해두면 여러 인스턴스·여러 시간대를
+    재사용 가능한 조합으로 관리할 수 있다</li>
+    <li>콘솔 UI 없이 DynamoDB 항목으로 직접 설정하는 구조라, 스케줄이 많아지면 Scheduler
+    CLI 사용을 검토하는 게 낫다</li>
+    <li>지원 대상(EC2/RDS/ASG)과 시간 형식(<code>HH:MM</code>)을 미리 확인해두면 삽질을
+    줄일 수 있다</li>
+  </ol>
+</article>
+
+<div class="wrap post-footer-nav">
+  <a href="backup-policy-mismatch.html">← 이전 글</a>
+  <a href="../index.html#writing">목록으로</a>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <span>© 2026 조은찬</span>
+    <a href="https://github.com/pang-ec" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</footer>
+
+</body>
+</html>
