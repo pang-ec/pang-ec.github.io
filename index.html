@@ -48,6 +48,30 @@
 
     <article class="project">
       <div class="project-head">
+        <h3>CloudFormation IaC Generator 자동화</h3>
+        <span class="tag">인프라 자동화</span>
+      </div>
+      <p class="project-desc">
+        CloudFormation으로 관리되지 않는 리소스를 EventBridge Scheduler + Lambda로 주기 스캔하고,
+        날짜별 CloudFormation 템플릿을 자동 생성하는 파이프라인. 생성된 템플릿으로 새 스택을 만들어
+        실제 자원 복구까지 검증했습니다.
+      </p>
+      <ul class="project-points">
+        <li>Step Functions 없이 단일 Lambda가 매 실행마다 CloudFormation 상태를 조회해 스스로 다음 단계로 진행하는 self-polling 구조 설계</li>
+        <li>템플릿 이름에 실행 날짜를 붙여(YYYYMMDD) 매일 새 템플릿으로 누적, 완료된 날짜는 재작업 스킵</li>
+        <li>Cloud Control API 위임 호출 구조를 파악해 서비스별 Describe 권한(ReadOnlyAccess) 구성</li>
+        <li>생성 템플릿으로 Create stack 실행 → 스캔 리소스가 스택 기반으로 재현되는 것까지 검증</li>
+      </ul>
+      <div class="stack">
+        <span>Python</span><span>boto3</span><span>AWS Lambda</span><span>EventBridge Scheduler</span><span>CloudFormation IaC Generator</span>
+      </div>
+      <a class="project-link" href="https://github.com/pang-ec/cfscan-eccho" target="_blank" rel="noopener">
+        github.com/pang-ec/cfscan-eccho →
+      </a>
+    </article>
+
+    <article class="project">
+      <div class="project-head">
         <h3>고객 문의 자동화 AI Agent 시스템</h3>
         <span class="tag">AI 에이전트</span>
       </div>
